@@ -1,70 +1,65 @@
+# Real-Time Object Speed Estimation using YOLOv8
 
-# Object Tracking & Speed Estimation using YOLOv8
+> **Note:** This repository contains the core algorithm for a larger research initiative. For a complete overview, including the academic paper and contest application, please visit the main hub repository: **[Project VITAS](https://github.com/ksh0330/Project-VITAS)**.
 
-This repository contains a simplified implementation for object detection, tracking, and speed estimation using the YOLOv8 model. It is designed to monitor object movement (e.g., vehicles) in CCTV or recorded video.
+---
 
 ## 🚗 Features
 
-- YOLOv8-based object detection  
-- Real-time object tracking  
-- Speed estimation using object displacement between frames  
-- PyQt-based video monitoring interface
+-   YOLOv8-based real-time object detection and tracking
+-   Vehicle speed estimation using pixel displacement analysis
+-   Simple configuration for video source and model parameters
 
-## 📁 Project Structure
+## 📖 Method Overview
 
-```
-object-tracking-speed-estimation/
-├── data/             # Input video files
-├── dcu.py            # Main GUI-based monitoring script
-├── yolov8s.pt        # YOLOv8 model weights
-├── requirements.txt  # Python dependencies
-├── README.md         # Project documentation
-```
+The core logic operates as follows:
+1.  **Detection**: YOLOv8 detects vehicles in each frame of the video stream.
+2.  **Tracking**: A simple centroid tracking algorithm assigns a unique ID to each detected vehicle.
+3.  **Speed Calculation**: When a tracked vehicle crosses a predefined, hard-coded measurement zone (ROI), its pixel displacement over time is calculated and converted to real-world speed (km/h) using a manually calibrated distance constant.
 
-## ⚙️ Installation
+## ⚠️ Limitations & Constraints
 
-1. Clone the repository:
+This algorithm requires manual calibration for each specific video environment.
+
+-   **Hard-coded Parameters**: The measurement zone (ROI), real-world distance, and video/model paths are hard-coded within the source code.
+-   **Manual Calibration**: To function correctly, you must manually measure the physical distance of the ROI in your video's environment and update the script.
+
+## 🛠️ Getting Started
+
+### 1. Prerequisites
+-   [Anaconda](https://www.anaconda.com/download) or [Miniconda](https://docs.conda.io/en/latest/miniconda.html) installed.
+-   An NVIDIA GPU with CUDA is recommended for real-time performance.
+
+### 2. Installation & Setup
+1.  **Clone the repository:**
+    ```bash
+    git clone [https://github.com/ksh0330/Speed-Estimation-YOLOv8.git](https://github.com/ksh0330/Speed-Estimation-YOLOv8.git)
+    cd Speed-Estimation-YOLOv8
+    ```
+2.  **Create and activate a new Conda environment:**
+    It is highly recommended to create a dedicated environment to avoid package conflicts.
+    ```bash
+    conda create -n vitas-core-env python=3.9
+    conda activate vitas-core-env
+    ```
+3.  **Install the required libraries:**
+    ```bash
+    pip install -r requirements.txt
+    ```
+
+### 3. Configuration (Required)
+
+Before running, you **must** configure the parameters inside `track_and_estimate.py`:
+
+-   `VIDEO_PATH`: Set the path to your input video file.
+-   `WEIGHTS_PATH`: Set the path to the YOLOv8 model weights (`.pt` file).
+-   `ROI_POINTS`: Define the pixel coordinates of your measurement zone.
+-   `REAL_DISTANCE_METERS`: Enter the actual physical length of the zone in meters.
+
+## 🚀 How to Run
+
+After activating the conda environment (`conda activate vitas-core-env`) and configuring the script, run it from your terminal:
 
 ```bash
-git clone https://github.com/ksh99-git/object-tracking-speed-estimation.git
-cd object-tracking-speed-estimation
+python track_and_estimate.py
 ```
-
-2. Install dependencies:
-
-```bash
-pip install -r requirements.txt
-```
-
-3. Download or verify `yolov8s.pt` exists in the root directory.
-
-## 🚀 Run the Application
-
-```bash
-python dcu.py
-```
-
-- Default video source: `data/sample_video.mp4`
-- To use webcam input, modify `dcu.py` as:
-
-```python
-video_source = 0
-```
-
-## 🧠 Method Overview
-
-- YOLOv8 detects objects frame-by-frame
-- Tracks objects using centroid matching
-- Estimates speed using simple displacement/time logic
-
-## 🎥 Sample Video
-
-Sample test video is located in the `data/` directory.
-
-## 📄 License
-
-This project is licensed under the MIT License.
-
-## 🙋‍♂️ Author
-
-- GitHub: [ksh99-git](https://github.com/ksh99-git)
