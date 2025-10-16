@@ -8,6 +8,8 @@
 
 -   YOLOv8-based real-time object detection and tracking
 -   Vehicle speed estimation using pixel displacement analysis
+-   PyQt5 GUI for real-time monitoring and visualization
+-   Multiple example implementations for different use cases
 -   Simple configuration for video source and model parameters
 
 ## 📖 Method Overview
@@ -16,6 +18,34 @@ The core logic operates as follows:
 1.  **Detection**: YOLOv8 detects vehicles in each frame of the video stream.
 2.  **Tracking**: A simple centroid tracking algorithm assigns a unique ID to each detected vehicle.
 3.  **Speed Calculation**: When a tracked vehicle crosses a predefined, hard-coded measurement zone (ROI), its pixel displacement over time is calculated and converted to real-world speed (km/h) using a manually calibrated distance constant.
+
+## 📁 Repository Structure
+
+```
+Speed-Estimation-YOLOv8/
+├── track_and_estimate.py    # Main speed estimation algorithm
+├── GPU_check.py            # GPU availability checker
+├── yolov8s.pt             # YOLOv8 model weights
+├── requirements.txt        # Python dependencies
+├── data/                  # Test videos (3 DCU videos)
+└── examples/              # Example implementations
+    ├── locations/         
+    │   ├── cop.py         
+    │   ├── dcu_refactored.py  
+    │   ├── food.py        
+    │   ├── hrc.py         
+    │   ├── mac.py         
+    │   └── medical_real.py 
+    ├── angles/    
+    │   ├── DCU_up.py        
+    │   └── HRC_back.py    
+    └── test_codes/        # Test and development codes
+        ├── ict_code.py    
+        ├── ict_code(0831).py 
+        ├── py_test_316.py 
+        ├── real_test.py   
+        └── test3.py       
+```
 
 ## ⚠️ Limitations & Constraints
 
