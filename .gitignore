@@ -1,3 +1,6 @@
 # Test files and folders
 GPU_check.py
 test_code/
+
+# Model weights (yolov8s.pt is downloaded by Ultralytics on first run)
+*.pt
