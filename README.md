@@ -24,8 +24,6 @@ The core logic operates as follows:
 ```
 Speed-Estimation-YOLOv8/
 ├── track_and_estimate.py    # Main speed estimation algorithm
-├── GPU_check.py            # GPU availability checker
-├── yolov8s.pt             # YOLOv8 model weights
 ├── requirements.txt        # Python dependencies
 ├── data/                  # Test videos (3 DCU videos)
 └── examples/              # Example implementations
@@ -63,7 +61,7 @@ This algorithm requires manual calibration for each specific video environment.
 ### 2. Installation & Setup
 1.  **Clone the repository:**
     ```bash
-    git clone [https://github.com/ksh0330/Speed-Estimation-YOLOv8.git](https://github.com/ksh0330/Speed-Estimation-YOLOv8.git)
+    git clone https://github.com/ksh0330/Speed-Estimation-YOLOv8.git
     cd Speed-Estimation-YOLOv8
     ```
 2.  **Create and activate a new Conda environment:**
@@ -76,15 +74,21 @@ This algorithm requires manual calibration for each specific video environment.
     ```bash
     pip install -r requirements.txt
     ```
+    `requirements.txt` pins CUDA 12.1 builds of PyTorch and pulls them from the PyTorch wheel index.
 
-### 3. Configuration (Required)
+### 3. Model Weights
 
-Before running, you **must** configure the parameters inside `track_and_estimate.py`:
+-   `track_and_estimate.py` and most examples use the official **`yolov8s.pt`**. It is not stored in this repository; Ultralytics downloads it automatically on the first run.
+-   Some scripts in `examples/test_codes/` load the custom-trained **`epoch52.pt`** from the VITAS contest entry. Download it from the [2024_Hanium_ICT_Contest releases](https://github.com/ksh0330/2024_Hanium_ICT_Contest/releases/latest) and place it next to the script you run.
 
--   `VIDEO_PATH`: Set the path to your input video file.
--   `WEIGHTS_PATH`: Set the path to the YOLOv8 model weights (`.pt` file).
--   `ROI_POINTS`: Define the pixel coordinates of your measurement zone.
--   `REAL_DISTANCE_METERS`: Enter the actual physical length of the zone in meters.
+### 4. Configuration (Required)
+
+Before running, adjust these values in `track_and_estimate.py` for your video:
+
+-   `video_source` (in the `__main__` block): input video path, default `data\DCU_30.mp4`. Use `0` for a webcam.
+-   `self.areas["A"]` and `sourceA` (in `VideoMonitor.__init__`): pixel coordinates of the four corners of the measurement zone.
+-   `self.T_W`, `self.T_H`: real-world width and length of the zone used for the perspective transform.
+-   `distance_m` (in the speed calculation): real-world length of the zone in meters, default `30`.
 
 ## 🚀 How to Run
 
